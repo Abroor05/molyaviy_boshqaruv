@@ -1,0 +1,134 @@
+.admin-dashboard { display: flex; flex-direction: column; gap: 24px; }
+
+.admin-dashboard__welcome h2 {
+  font-size: 22px; font-weight: 800; color: var(--color-text-primary);
+  margin-bottom: 4px; letter-spacing: -0.3px;
+}
+.admin-dashboard__welcome p { font-size: 13.5px; color: var(--color-text-secondary); }
+
+/* Summary Grid */
+.admin-summary-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.admin-summary-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  box-shadow: var(--shadow-card);
+  transition: var(--transition-slow);
+}
+.admin-summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+}
+
+.admin-summary-card__icon {
+  width: 48px; height: 48px;
+  border-radius: var(--radius-md);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+.admin-summary-card__title {
+  font-size: 12px; font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+.admin-summary-card__value {
+  font-size: 20px; font-weight: 800;
+  color: var(--color-text-primary);
+  letter-spacing: -0.5px; margin-bottom: 3px;
+}
+.admin-summary-card__sub {
+  font-size: 12px; color: var(--color-text-muted);
+}
+
+/* Chart */
+.admin-dashboard__chart-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+}
+.admin-dashboard__chart-card h3 {
+  font-size: 15px; font-weight: 700;
+  color: var(--color-text-primary); margin-bottom: 20px;
+}
+
+/* Table Card */
+.admin-dashboard__table-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+}
+.admin-dashboard__table-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 16px 20px;
+  border-bottom: 1px solid var(--color-border);
+}
+.admin-dashboard__table-head h3 {
+  font-size: 15px; font-weight: 700; color: var(--color-text-primary);
+}
+.admin-dashboard__table-head span {
+  font-size: 12px; color: var(--color-text-muted);
+}
+
+/* Admin Table */
+.admin-table {
+  width: 100%; border-collapse: collapse; font-size: 13.5px;
+}
+.admin-table thead tr { background: var(--color-bg); }
+.admin-table th {
+  padding: 11px 16px; text-align: left;
+  font-size: 11px; font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase; letter-spacing: 0.6px;
+  white-space: nowrap;
+}
+.admin-table td {
+  padding: 13px 16px;
+  border-bottom: 1px solid var(--color-border-light);
+  color: var(--color-text-primary);
+  vertical-align: middle;
+}
+.admin-table tr:last-child td { border-bottom: none; }
+.admin-table tr:hover td { background: var(--color-bg); }
+
+.admin-table__num {
+  font-size: 13px; font-weight: 700;
+  color: var(--color-text-muted); width: 40px;
+}
+.admin-table__user { display: flex; align-items: center; gap: 10px; }
+.admin-table__avatar {
+  width: 34px; height: 34px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary), var(--color-secondary));
+  color: #fff; font-size: 13px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; overflow: hidden;
+}
+.admin-table__avatar img { width: 100%; height: 100%; object-fit: cover; }
+.admin-table__name { font-size: 13.5px; font-weight: 600; color: var(--color-text-primary); }
+.admin-table__email { font-size: 12px; color: var(--color-text-muted); }
+
+/* Status Badge */
+.admin-status-badge {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 3px 10px; border-radius: var(--radius-full);
+  font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.3px;
+}
+.admin-status-badge--active   { background: var(--color-success-light); color: var(--color-success); }
+.admin-status-badge--inactive { background: var(--color-danger-light);  color: var(--color-danger); }
+
+@media (max-width: 1100px) { .admin-summary-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 600px)  { .admin-summary-grid { grid-template-columns: 1fr; } }

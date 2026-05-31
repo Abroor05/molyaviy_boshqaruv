@@ -1,0 +1,20 @@
+.loader {
+  border-radius: 50%;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+.loader--sm { width: 20px; height: 20px; }
+.loader--md { width: 36px; height: 36px; }
+.loader--lg { width: 56px; height: 56px; }
+
+.loader-fullscreen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+}

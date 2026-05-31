@@ -1,0 +1,11 @@
+/*
+  RegisterPage.css
+  ─────────────────────────────────────────────────────────────
+  RegisterPage uses the same split-screen auth layout as LoginPage.
+  All shared styles live in LoginPage.css which is imported directly
+  inside RegisterPage.jsx:
+
+    import '../LoginPage/LoginPage.css';
+
+  Add any RegisterPage-specific overrides below if needed.
+*/

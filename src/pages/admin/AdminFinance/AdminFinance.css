@@ -1,0 +1,67 @@
+.admin-finance { display: flex; flex-direction: column; gap: 20px; }
+
+.admin-finance__header {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  flex-wrap: wrap; gap: 14px;
+}
+.admin-finance__header h2 {
+  font-size: 22px; font-weight: 800; color: var(--color-text-primary);
+  margin-bottom: 4px; letter-spacing: -0.3px;
+}
+.admin-finance__header p { font-size: 13.5px; color: var(--color-text-secondary); }
+
+.admin-finance__filter {
+  display: flex; align-items: center; gap: 10px;
+  font-size: 13.5px; color: var(--color-text-secondary);
+}
+.admin-finance__filter select {
+  padding: 9px 14px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-bg-secondary);
+  color: var(--color-text-primary);
+  font-size: 13.5px; cursor: pointer; transition: var(--transition);
+}
+.admin-finance__filter select:focus { border-color: #7c3aed; }
+
+.admin-finance__summary {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px;
+}
+.admin-finance__sum-card {
+  padding: 22px 20px; border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-secondary);
+  box-shadow: var(--shadow-card);
+}
+.admin-finance__sum-card p {
+  font-size: 12px; font-weight: 600; text-transform: uppercase;
+  letter-spacing: 0.5px; margin-bottom: 8px;
+}
+.admin-finance__sum-card h3 {
+  font-size: 22px; font-weight: 800; letter-spacing: -0.5px;
+}
+.admin-finance__sum-card--income p  { color: var(--color-success); }
+.admin-finance__sum-card--income h3 { color: var(--color-success); }
+.admin-finance__sum-card--expense p  { color: var(--color-danger); }
+.admin-finance__sum-card--expense h3 { color: var(--color-danger); }
+.admin-finance__sum-card--balance p  { color: var(--color-primary); }
+.admin-finance__sum-card--balance h3 { color: var(--color-primary); }
+
+.admin-finance__charts {
+  display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px;
+}
+.admin-chart-card {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 22px; box-shadow: var(--shadow-card);
+}
+.admin-chart-card h3 {
+  font-size: 15px; font-weight: 700;
+  color: var(--color-text-primary); margin-bottom: 18px;
+}
+
+@media (max-width: 900px) {
+  .admin-finance__summary { grid-template-columns: 1fr; }
+  .admin-finance__charts  { grid-template-columns: 1fr; }
+}

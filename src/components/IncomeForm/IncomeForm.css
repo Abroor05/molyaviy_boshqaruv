@@ -1,0 +1,33 @@
+.entry-form { display: flex; flex-direction: column; gap: 16px; }
+.entry-form__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+.entry-form__submit {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 22px;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  transition: var(--transition);
+  align-self: flex-start;
+  color: #fff;
+}
+.entry-form__submit--income { background: var(--color-success); }
+.entry-form__submit--income:hover {
+  background: var(--color-success-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16,185,129,0.3);
+}
+.entry-form__submit--expense { background: var(--color-danger); }
+.entry-form__submit--expense:hover {
+  background: var(--color-danger-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(239,68,68,0.3);
+}
+@media (max-width: 560px) {
+  .entry-form__grid { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,11 @@
+.public-layout {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-primary);
+}
+
+.public-layout__main {
+  flex: 1;
+  padding-top: var(--navbar-height);
+}
