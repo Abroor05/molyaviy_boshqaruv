@@ -1,16 +1,16 @@
 # Tasks
 
-## Task 1: Backend — .env fayli va ma'lumotlar bazasini sozlash
+##Task 1: Backend — .env fayli va ma'lumotlar bazasini sozlash
 **Status:** not_started
 
 Server ishga tushirish uchun `.env` faylini to'ldirish va PostgreSQL ma'lumotlar bazasini sozlash.
 
 ### Sub-tasks:
-- [~] 1.1 `server/.env` faylida `DATABASE_URL` ni to'g'ri PostgreSQL URL bilan to'ldirish
-- [~] 1.2 `JWT_SECRET` va `JWT_REFRESH_SECRET` uchun kuchli random string qo'yish
-- [~] 1.3 `npx prisma migrate dev --name init` buyrug'i bilan migratsiya yaratish
-- [~] 1.4 `node src/prisma/seed.js` bilan demo ma'lumotlarni yuklash
-- [~] 1.5 `npm run dev` bilan serverni ishga tushirish va `/health` endpointni tekshirish
+- [ ] 1.1 `server/.env` faylida `DATABASE_URL` ni to'g'ri PostgreSQL URL bilan to'ldirish
+- [ ] 1.2 `JWT_SECRET` va `JWT_REFRESH_SECRET` uchun kuchli random string qo'yish
+- [ ] 1.3 `npx prisma migrate dev --name init` buyrug'i bilan migratsiya yaratish
+- [ ] 1.4 `node src/prisma/seed.js` bilan demo ma'lumotlarni yuklash
+- [ ] 1.5 `npm run dev` bilan serverni ishga tushirish va `/health` endpointni tekshirish
 
 **Acceptance criteria:**
 - Server `http://localhost:5000` da ishlamoqda
@@ -19,25 +19,25 @@ Server ishga tushirish uchun `.env` faylini to'ldirish va PostgreSQL ma'lumotlar
 
 ---
 
-## Task 2: Backend — API endpointlarni test qilish
+##Task 2: Backend — API endpointlarni test qilish
 **Status:** not_started
 **Depends on:** Task 1
 
 Barcha API endpointlarni Postman yoki curl orqali tekshirish.
 
 ### Sub-tasks:
-- [~] 2.1 `POST /api/auth/register` — yangi user ro'yxatdan o'tkazish
-- [~] 2.2 `POST /api/auth/login` — admin va user bilan kirish, tokenlarni olish
-- [~] 2.3 `GET /api/auth/me` — Bearer token bilan joriy userni olish
-- [~] 2.4 `GET /api/incomes` — daromadlar ro'yxatini olish (auth required)
-- [~] 2.5 `POST /api/incomes` — yangi daromad qo'shish
-- [~] 2.6 `PUT /api/incomes/:id` — daromadni yangilash
-- [~] 2.7 `DELETE /api/incomes/:id` — daromadni o'chirish
-- [~] 2.8 `GET /api/expenses` — xarajatlar ro'yxati
-- [~] 2.9 `POST /api/expenses` — yangi xarajat qo'shish
-- [~] 2.10 `GET /api/stats` — statistika ma'lumotlari
-- [~] 2.11 `GET /api/admin/stats` — admin dashboard statistikasi
-- [~] 2.12 `GET /api/admin/users` — barcha userlar ro'yxati (admin only)
+- [ ] 2.1 `POST /api/auth/register` — yangi user ro'yxatdan o'tkazish
+- [ ] 2.2 `POST /api/auth/login` — admin va user bilan kirish, tokenlarni olish
+- [ ] 2.3 `GET /api/auth/me` — Bearer token bilan joriy userni olish
+- [ ] 2.4 `GET /api/incomes` — daromadlar ro'yxatini olish (auth required)
+- [ ] 2.5 `POST /api/incomes` — yangi daromad qo'shish
+- [ ] 2.6 `PUT /api/incomes/:id` — daromadni yangilash
+- [ ] 2.7 `DELETE /api/incomes/:id` — daromadni o'chirish
+- [ ] 2.8 `GET /api/expenses` — xarajatlar ro'yxati
+- [ ] 2.9 `POST /api/expenses` — yangi xarajat qo'shish
+- [ ] 2.10 `GET /api/stats` — statistika ma'lumotlari
+- [ ] 2.11 `GET /api/admin/stats` — admin dashboard statistikasi
+- [ ] 2.12 `GET /api/admin/users` — barcha userlar ro'yxati (admin only)
 
 **Acceptance criteria:**
 - Barcha endpointlar to'g'ri status code qaytaradi
@@ -46,7 +46,7 @@ Barcha API endpointlarni Postman yoki curl orqali tekshirish.
 
 ---
 
-## Task 3: Frontend — API service layer yaratish
+##Task 3: Frontend — API service layer yaratish
 **Status:** not_started
 **Depends on:** Task 1
 
@@ -68,7 +68,7 @@ Frontend uchun API bilan ishlash uchun `axios` yoki `fetch` asosida service laye
 
 ---
 
-## Task 4: Frontend — AuthContext ni API bilan ulash
+# Task 4: Frontend — AuthContext ni API bilan ulash
 **Status:** not_started
 **Depends on:** Task 3
 
@@ -90,7 +90,7 @@ Frontend uchun API bilan ishlash uchun `axios` yoki `fetch` asosida service laye
 
 ---
 
-## Task 5: Frontend — FinanceContext ni API bilan ulash
+# Task 5: Frontend — FinanceContext ni API bilan ulash
 **Status:** not_started
 **Depends on:** Task 3
 
@@ -113,7 +113,7 @@ Frontend uchun API bilan ishlash uchun `axios` yoki `fetch` asosida service laye
 
 ---
 
-## Task 6: Frontend — Statistics sahifasini API ga ulash
+# Task 6: Frontend — Statistics sahifasini API ga ulash
 **Status:** not_started
 **Depends on:** Task 5
 
@@ -131,7 +131,7 @@ Frontend uchun API bilan ishlash uchun `axios` yoki `fetch` asosida service laye
 
 ---
 
-## Task 7: Frontend — Admin panel ni API ga ulash
+# Task 7: Frontend — Admin panel ni API ga ulash
 **Status:** not_started
 **Depends on:** Task 4
 
@@ -153,7 +153,7 @@ Admin sahifalarini real API bilan ishlashga o'tkazish.
 
 ---
 
-## Task 8: Frontend — CSS fayllarini to'ldirish
+# Task 8: Frontend — CSS fayllarini to'ldirish
 **Status:** not_started
 
 Barcha komponent va sahifalar uchun CSS fayllarini yozish.
@@ -188,7 +188,7 @@ Barcha komponent va sahifalar uchun CSS fayllarini yozish.
 
 ---
 
-## Task 9: Frontend — ExpensePage va IncomeForm/ExpenseForm komponentlarini to'ldirish
+#  Task 9: Frontend — ExpensePage va IncomeForm/ExpenseForm komponentlarini to'ldirish
 **Status:** not_started
 
 `ExpensePage.jsx`, `IncomeForm.jsx`, `ExpenseForm.jsx` komponentlarini yozish.
@@ -212,7 +212,7 @@ Barcha komponent va sahifalar uchun CSS fayllarini yozish.
 
 ---
 
-## Task 10: Frontend — AdminLayout va AdminSidebar komponentlarini to'ldirish
+# Task 10: Frontend — AdminLayout va AdminSidebar komponentlarini to'ldirish
 **Status:** not_started
 
 Admin panel layout komponentlarini yozish.
@@ -231,16 +231,16 @@ Admin panel layout komponentlarini yozish.
 
 ---
 
-## Task 11: Integratsiya va yakuniy test
+# Task 11: Integratsiya va yakuniy test
 **Status:** not_started
 **Depends on:** Task 4, Task 5, Task 7, Task 8, Task 9, Task 10
 
 Butun ilovani end-to-end test qilish.
 
 ### Sub-tasks:
-- [~] 11.1 Landing page → Register → Dashboard oqimini test qilish
-- [~] 11.2 Login (user) → Dashboard → Income qo'shish → Statistics ko'rish
-- [~] 11.3 Login (admin) → Admin Dashboard → User bloklash → Bloklangan user login qila olmasligini tekshirish
+- [ ] 11.1 Landing page → Register → Dashboard oqimini test qilish
+- [ ] 11.2 Login (user) → Dashboard → Income qo'shish → Statistics ko'rish
+- [ ] 11.3 Login (admin) → Admin Dashboard → User bloklash → Bloklangan user login qila olmasligini tekshirish
 - [x] 11.4 Dark/Light mode toggle barcha sahifalarda ishlashini tekshirish
 - [~] 11.5 Mobile (320px) da responsive ko'rinishni tekshirish
 - [~] 11.6 Token muddati tugaganda avtomatik refresh ishlashini tekshirish
@@ -253,7 +253,7 @@ Butun ilovani end-to-end test qilish.
 
 ---
 
-## Task 12: README.md yangilash
+# Task 12: README.md yangilash
 **Status:** not_started
 **Depends on:** Task 11
 

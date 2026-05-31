@@ -16,18 +16,25 @@ const EMPTY_FORM = { fullName: '', email: '', password: '', role: 'user', status
 
 const AdminUsers = () => {
   const { users: localUsers, adminUpdateUser, adminDeleteUser, adminCreateUser } = useAuth();
-  const { incomes, expenses } = useFinance();
+  const { incomes: ctxIncomes, expenses: ctxExpenses } = useFinance();
 
   // ── API mode state ────────────────────────────────────────────────────────────
-  const [apiUsers, setApiUsers]   = useState([]);
-  const [loadingApi, setLoadingApi] = useState(false);
+  const [apiUsers,    setApiUsers]    = useState([]);
+  const [apiIncomes,  setApiIncomes]  = useState([]);
+  const [apiExpenses, setApiExpenses] = useState([]);
+  const [loadingApi,  setLoadingApi]  = useState(false);
 
   const fetchApiUsers = useCallback(async () => {
     if (!USE_API) return;
     setLoadingApi(true);
     try {
-      const data = await adminService.getUsers({ limit: 100 });
-      setApiUsers(data.users || []);
+      const [usersData, txData] = await Promise.all([
+        adminService.getUsers({ limit: 100 }),
+        adminService.getAllTransactions({ limit: 1000 }),
+      ]);
+      setApiUsers(usersData.users || []);
+      setApiIncomes(txData.incomes  || []);
+      setApiExpenses(txData.expenses || []);
     } catch (err) {
       console.error('Admin users fetch error:', err);
     } finally {
@@ -36,6 +43,10 @@ const AdminUsers = () => {
   }, []);
 
   useEffect(() => { fetchApiUsers(); }, [fetchApiUsers]);
+
+  // Qaysi ma'lumot ishlatilishini aniqlash
+  const incomes  = USE_API ? apiIncomes  : ctxIncomes;
+  const expenses = USE_API ? apiExpenses : ctxExpenses;
 
   // ── Unified users list ────────────────────────────────────────────────────────
   const allUsers = USE_API ? apiUsers : localUsers;
@@ -66,8 +77,8 @@ const AdminUsers = () => {
   }, [regularUsers, search, roleFilter]);
 
   const getUserStats = (userId) => {
-    const inc = incomes.filter(i => i.userId === userId).reduce((s, i) => s + i.amount, 0);
-    const exp = expenses.filter(e => e.userId === userId).reduce((s, e) => s + e.amount, 0);
+    const inc = incomes.filter(i => i.userId === userId).reduce((s, i) => s + Number(i.amount), 0);
+    const exp = expenses.filter(e => e.userId === userId).reduce((s, e) => s + Number(e.amount), 0);
     return { income: inc, expense: exp, balance: inc - exp };
   };
 

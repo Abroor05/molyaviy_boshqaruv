@@ -231,4 +231,41 @@ const getDashboardStats = async (req, res, next) => {
   }
 };
 
-module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser, toggleUserStatus, getDashboardStats };
+// ── Get all transactions (admin) ──────────────────────────────────────────────
+const getAllTransactions = async (req, res, next) => {
+  try {
+    const { userId, limit = 500 } = req.query;
+
+    const where = userId ? { userId } : {};
+
+    const [incomes, expenses] = await Promise.all([
+      prisma.income.findMany({
+        where,
+        orderBy: { date: 'desc' },
+        take: parseInt(limit),
+        select: {
+          id: true, title: true, amount: true, category: true,
+          date: true, description: true, userId: true,
+        },
+      }),
+      prisma.expense.findMany({
+        where,
+        orderBy: { date: 'desc' },
+        take: parseInt(limit),
+        select: {
+          id: true, title: true, amount: true, category: true,
+          date: true, description: true, userId: true,
+        },
+      }),
+    ]);
+
+    res.json({
+      success: true,
+      data: { incomes, expenses },
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+module.exports = { getAllUsers, getUserById, createUser, updateUser, deleteUser, toggleUserStatus, getDashboardStats, getAllTransactions };

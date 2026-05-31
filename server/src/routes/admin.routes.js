@@ -9,6 +9,7 @@ const {
   deleteUser,
   toggleUserStatus,
   getDashboardStats,
+  getAllTransactions,
 } = require('../controllers/admin.controller');
 
 const { authenticate, adminOnly } = require('../middlewares/auth.middleware');
@@ -17,6 +18,7 @@ const { authenticate, adminOnly } = require('../middlewares/auth.middleware');
 router.use(authenticate, adminOnly);
 
 router.get('/stats',              getDashboardStats);
+router.get('/transactions',       getAllTransactions);
 router.get('/users',              getAllUsers);
 router.get('/users/:id',          getUserById);
 router.post('/users',             createUser);

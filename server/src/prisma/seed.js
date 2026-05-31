@@ -3,10 +3,8 @@ require('dotenv').config({ path: require('path').join(__dirname, '../../.env') }
 const { PrismaClient } = require('@prisma/client');
 const bcrypt = require('bcryptjs');
 
+// Seed uchun oddiy PrismaClient (adapter kerak emas)
 const prisma = new PrismaClient();
-
-const INCOME_CATEGORIES  = ['Maosh', 'Freelance', 'Biznes', 'Investitsiya', "Sovg'a", 'Ijara', 'Boshqa'];
-const EXPENSE_CATEGORIES = ['Oziq-ovqat', 'Transport', 'Uy-joy', 'Kiyim', "Sog'liq", "Ta'lim", "Ko'ngilochar", 'Kommunal', 'Internet', 'Boshqa'];
 
 function daysAgo(n) {
   const d = new Date();
@@ -46,45 +44,17 @@ async function main() {
   const userPassword = await bcrypt.hash('password123', 12);
 
   const user1 = await prisma.user.create({
-    data: {
-      fullName: 'Alisher Karimov',
-      email:    'alisher@example.com',
-      password: userPassword,
-      role:     'USER',
-      status:   'ACTIVE',
-    },
+    data: { fullName: 'Alisher Karimov', email: 'alisher@example.com', password: userPassword, role: 'USER', status: 'ACTIVE' },
   });
-
   const user2 = await prisma.user.create({
-    data: {
-      fullName: 'Malika Yusupova',
-      email:    'malika@example.com',
-      password: userPassword,
-      role:     'USER',
-      status:   'ACTIVE',
-    },
+    data: { fullName: 'Malika Yusupova', email: 'malika@example.com', password: userPassword, role: 'USER', status: 'ACTIVE' },
   });
-
   const user3 = await prisma.user.create({
-    data: {
-      fullName: 'Bobur Rahimov',
-      email:    'bobur@example.com',
-      password: userPassword,
-      role:     'USER',
-      status:   'INACTIVE',
-    },
+    data: { fullName: 'Bobur Rahimov', email: 'bobur@example.com', password: userPassword, role: 'USER', status: 'INACTIVE' },
   });
-
   const user4 = await prisma.user.create({
-    data: {
-      fullName: 'Nilufar Karimova',
-      email:    'nilufar@example.com',
-      password: userPassword,
-      role:     'USER',
-      status:   'ACTIVE',
-    },
+    data: { fullName: 'Nilufar Karimova', email: 'nilufar@example.com', password: userPassword, role: 'USER', status: 'ACTIVE' },
   });
-
   console.log('✅ 4 ta user yaratildi');
 
   // ── Incomes for user1 ──────────────────────────────────────────────────────
@@ -115,7 +85,7 @@ async function main() {
     ],
   });
 
-  // ── Incomes & Expenses for user2 ───────────────────────────────────────────
+  // ── user2 ──────────────────────────────────────────────────────────────────
   await prisma.income.createMany({
     data: [
       { userId: user2.id, title: 'Oylik maosh', amount: 4500000, category: 'Maosh',     date: daysAgo(2),  description: 'Iyun maoshi' },
@@ -131,10 +101,10 @@ async function main() {
     ],
   });
 
-  // ── Incomes & Expenses for user3 ───────────────────────────────────────────
+  // ── user3 ──────────────────────────────────────────────────────────────────
   await prisma.income.createMany({
     data: [
-      { userId: user3.id, title: 'Maosh',          amount: 3800000, category: 'Maosh',     date: daysAgo(1), description: 'Iyun' },
+      { userId: user3.id, title: 'Maosh',           amount: 3800000, category: 'Maosh',     date: daysAgo(1), description: 'Iyun' },
       { userId: user3.id, title: "Qo'shimcha ish",  amount: 600000,  category: 'Freelance', date: daysAgo(7), description: 'Tarjima' },
     ],
   });
@@ -145,7 +115,7 @@ async function main() {
     ],
   });
 
-  // ── Incomes & Expenses for user4 ───────────────────────────────────────────
+  // ── user4 ──────────────────────────────────────────────────────────────────
   await prisma.income.createMany({
     data: [
       { userId: user4.id, title: 'Oylik maosh',  amount: 6000000, category: 'Maosh',        date: daysAgo(1), description: 'Iyun' },
@@ -159,7 +129,7 @@ async function main() {
     ],
   });
 
-  console.log('✅ Demo ma\'lumotlar yaratildi');
+  console.log("✅ Demo ma'lumotlar yaratildi");
   console.log('\n📋 Login ma\'lumotlari:');
   console.log('   Admin:  admin@example.com  / admin123');
   console.log('   User 1: alisher@example.com / password123');
@@ -169,5 +139,5 @@ async function main() {
 }
 
 main()
-  .catch(e => { console.error('❌ Seed xatosi:', e); process.exit(1); })
+  .catch(e => { console.error('❌ Seed xatosi:', e.message); process.exit(1); })
   .finally(() => prisma.$disconnect());

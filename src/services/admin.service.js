@@ -7,6 +7,12 @@ const adminService = {
     return data.data;
   },
 
+  // ── Get all transactions (barcha userlarniki) ────────────────────────────────
+  getAllTransactions: async (params = {}) => {
+    const data = await api.get('/admin/transactions', params);
+    return data.data;
+  },
+
   // ── Get all users ────────────────────────────────────────────────────────────
   getUsers: async (params = {}) => {
     const data = await api.get('/admin/users', params);

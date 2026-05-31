@@ -78,9 +78,9 @@ const LoginPage = () => {
             <div className={`form-field ${errors.email ? 'form-field--error' : ''}`}>
               <label>Email manzil</label>
               <div className="auth-input-wrap">
-                <MdEmail size={17} className="auth-input-icon" />
                 <input type="email" name="email" value={form.email}
                   onChange={handleChange} placeholder="email@example.com" autoComplete="email" />
+                <MdEmail size={17} className="auth-input-icon" />
               </div>
               {errors.email && <span className="form-field__error">{errors.email}</span>}
             </div>
@@ -88,10 +88,10 @@ const LoginPage = () => {
             <div className={`form-field ${errors.password ? 'form-field--error' : ''}`}>
               <label>Parol</label>
               <div className="auth-input-wrap">
-                <MdLock size={17} className="auth-input-icon" />
                 <input type={showPass ? 'text' : 'password'} name="password"
                   value={form.password} onChange={handleChange}
                   placeholder="Parolingizni kiriting" autoComplete="current-password" />
+                <MdLock size={17} className="auth-input-icon" />
                 <button type="button" className="auth-eye-btn" onClick={() => setShowPass(!showPass)}>
                   {showPass ? <MdVisibilityOff size={17} /> : <MdVisibility size={17} />}
                 </button>
@@ -115,20 +115,6 @@ const LoginPage = () => {
           <p className="auth-switch">
             Hisobingiz yo'qmi? <Link to="/register">Ro'yxatdan o'ting</Link>
           </p>
-
-          {/* Demo credentials */}
-          <div className="auth-demo-cards">
-            <div className="auth-demo-card auth-demo-card--admin">
-              <span className="auth-demo-card__badge">Admin</span>
-              <code>admin@example.com</code>
-              <code>admin123</code>
-            </div>
-            <div className="auth-demo-card auth-demo-card--user">
-              <span className="auth-demo-card__badge">User</span>
-              <code>alisher@example.com</code>
-              <code>password123</code>
-            </div>
-          </div>
         </div>
       </div>
 

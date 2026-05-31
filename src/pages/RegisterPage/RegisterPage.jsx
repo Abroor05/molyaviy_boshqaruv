@@ -78,8 +78,8 @@ const RegisterPage = () => {
             <div className={`form-field ${errors.fullName ? 'form-field--error' : ''}`}>
               <label>To'liq ism</label>
               <div className="auth-input-wrap">
-                <MdPerson size={17} className="auth-input-icon" />
                 <input name="fullName" value={form.fullName} onChange={handleChange} placeholder="Ism Familiya" autoComplete="name" />
+                <MdPerson size={17} className="auth-input-icon" />
               </div>
               {errors.fullName && <span className="form-field__error">{errors.fullName}</span>}
             </div>
@@ -87,8 +87,8 @@ const RegisterPage = () => {
             <div className={`form-field ${errors.email ? 'form-field--error' : ''}`}>
               <label>Email manzil</label>
               <div className="auth-input-wrap">
-                <MdEmail size={17} className="auth-input-icon" />
                 <input type="email" name="email" value={form.email} onChange={handleChange} placeholder="email@example.com" autoComplete="email" />
+                <MdEmail size={17} className="auth-input-icon" />
               </div>
               {errors.email && <span className="form-field__error">{errors.email}</span>}
             </div>
@@ -96,8 +96,8 @@ const RegisterPage = () => {
             <div className={`form-field ${errors.password ? 'form-field--error' : ''}`}>
               <label>Parol</label>
               <div className="auth-input-wrap">
-                <MdLock size={17} className="auth-input-icon" />
                 <input type={showPass ? 'text' : 'password'} name="password" value={form.password} onChange={handleChange} placeholder="Kamida 8 ta belgi" autoComplete="new-password" />
+                <MdLock size={17} className="auth-input-icon" />
                 <button type="button" className="auth-eye-btn" onClick={() => setShowPass(!showPass)}>
                   {showPass ? <MdVisibilityOff size={17} /> : <MdVisibility size={17} />}
                 </button>
@@ -108,8 +108,8 @@ const RegisterPage = () => {
             <div className={`form-field ${errors.confirmPassword ? 'form-field--error' : ''}`}>
               <label>Parolni tasdiqlang</label>
               <div className="auth-input-wrap">
-                <MdLock size={17} className="auth-input-icon" />
                 <input type={showPass ? 'text' : 'password'} name="confirmPassword" value={form.confirmPassword} onChange={handleChange} placeholder="Parolni qayta kiriting" autoComplete="new-password" />
+                <MdLock size={17} className="auth-input-icon" />
               </div>
               {errors.confirmPassword && <span className="form-field__error">{errors.confirmPassword}</span>}
             </div>

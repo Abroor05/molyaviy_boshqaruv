@@ -16,34 +16,47 @@ const USE_API = import.meta.env.VITE_USE_API === 'true';
 
 const AdminDashboard = () => {
   const { users } = useAuth();
-  const { incomes, expenses, transactions, totalIncome, totalExpense, balance } = useFinance();
+  // LocalStorage mode uchun FinanceContext ishlatiladi
+  const { incomes: ctxIncomes, expenses: ctxExpenses, transactions: ctxTransactions, totalIncome: ctxTotalIncome, totalExpense: ctxTotalExpense, balance: ctxBalance } = useFinance();
 
-  const [apiStats, setApiStats] = useState(null);
-  const [loadingApi, setLoadingApi] = useState(false);
+  const [apiStats, setApiStats]           = useState(null);
+  const [apiTransactions, setApiTransactions] = useState({ incomes: [], expenses: [] });
+  const [loadingApi, setLoadingApi]       = useState(false);
 
-  // ── API mode: admin stats ─────────────────────────────────────────────────────
+  // ── API mode: admin stats + barcha tranzaksiyalar ─────────────────────────────
   useEffect(() => {
     if (!USE_API) return;
-    const fetchStats = async () => {
+    const fetchAll = async () => {
       setLoadingApi(true);
       try {
-        const data = await adminService.getDashboardStats();
-        setApiStats(data);
+        const [statsData, txData] = await Promise.all([
+          adminService.getDashboardStats(),
+          adminService.getAllTransactions({ limit: 1000 }),
+        ]);
+        setApiStats(statsData);
+        setApiTransactions({
+          incomes:  (txData.incomes  || []).map(i => ({ ...i, date: i.date ? i.date.split('T')[0] : i.date })),
+          expenses: (txData.expenses || []).map(e => ({ ...e, date: e.date ? e.date.split('T')[0] : e.date })),
+        });
       } catch (err) {
         console.error('Admin stats error:', err);
       } finally {
         setLoadingApi(false);
       }
     };
-    fetchStats();
+    fetchAll();
   }, []);
+
+  // Qaysi ma'lumot ishlatilishini aniqlash
+  const incomes  = USE_API ? apiTransactions.incomes  : ctxIncomes;
+  const expenses = USE_API ? apiTransactions.expenses : ctxExpenses;
 
   // ── LocalStorage mode ─────────────────────────────────────────────────────────
   const regularUsers = users.filter(u => u.role === 'user' || u.role === 'USER');
   const activeUsers  = regularUsers.filter(u => u.status === 'active' || u.status === 'ACTIVE');
 
-  const monthlyIncome  = useMemo(() => incomes.filter(i => isCurrentMonth(i.date)).reduce((s, i) => s + i.amount, 0), [incomes]);
-  const monthlyExpense = useMemo(() => expenses.filter(e => isCurrentMonth(e.date)).reduce((s, e) => s + e.amount, 0), [expenses]);
+  const monthlyIncome  = useMemo(() => incomes.filter(i => isCurrentMonth(i.date)).reduce((s, i) => s + Number(i.amount), 0), [incomes]);
+  const monthlyExpense = useMemo(() => expenses.filter(e => isCurrentMonth(e.date)).reduce((s, e) => s + Number(e.amount), 0), [expenses]);
 
   const chartData = useMemo(() => {
     if (USE_API && apiStats?.monthlyChart) {
@@ -57,12 +70,12 @@ const AdminDashboard = () => {
     incomes.forEach(i => {
       const k = getMonthYear(i.date);
       if (!map[k]) map[k] = { income: 0, expense: 0 };
-      map[k].income += i.amount;
+      map[k].income += Number(i.amount);
     });
     expenses.forEach(e => {
       const k = getMonthYear(e.date);
       if (!map[k]) map[k] = { income: 0, expense: 0 };
-      map[k].expense += e.amount;
+      map[k].expense += Number(e.amount);
     });
     return Object.entries(map)
       .sort(([a], [b]) => a.localeCompare(b))
@@ -73,15 +86,45 @@ const AdminDashboard = () => {
       });
   }, [incomes, expenses, apiStats]);
 
+  // Top users — API mode da ham incomes/expenses dan hisoblash
   const topUsers = useMemo(() => {
+    if (USE_API) {
+      // API mode: apiTransactions dan userId bo'yicha guruhlash
+      const userMap = {};
+      incomes.forEach(i => {
+        if (!userMap[i.userId]) userMap[i.userId] = { totalIncome: 0, totalExpense: 0 };
+        userMap[i.userId].totalIncome += Number(i.amount);
+      });
+      expenses.forEach(e => {
+        if (!userMap[e.userId]) userMap[e.userId] = { totalIncome: 0, totalExpense: 0 };
+        userMap[e.userId].totalExpense += Number(e.amount);
+      });
+      // apiStats dan user ro'yxatini olish mumkin emas, shuning uchun faqat ID bilan ko'rsatamiz
+      // AdminUsers sahifasida to'liq ma'lumot bor
+      return Object.entries(userMap)
+        .map(([userId, data]) => ({
+          id: userId,
+          fullName: userId,
+          email: '',
+          status: 'ACTIVE',
+          totalIncome: data.totalIncome,
+          totalExpense: data.totalExpense,
+          balance: data.totalIncome - data.totalExpense,
+        }))
+        .sort((a, b) => b.totalIncome - a.totalIncome)
+        .slice(0, 5);
+    }
     return regularUsers.map(u => {
-      const inc = incomes.filter(i => i.userId === u.id).reduce((s, i) => s + i.amount, 0);
-      const exp = expenses.filter(e => e.userId === u.id).reduce((s, e) => s + e.amount, 0);
+      const inc = incomes.filter(i => i.userId === u.id).reduce((s, i) => s + Number(i.amount), 0);
+      const exp = expenses.filter(e => e.userId === u.id).reduce((s, e) => s + Number(e.amount), 0);
       return { ...u, totalIncome: inc, totalExpense: exp, balance: inc - exp };
     }).sort((a, b) => b.totalIncome - a.totalIncome).slice(0, 5);
   }, [regularUsers, incomes, expenses]);
 
   // ── Summary cards data ────────────────────────────────────────────────────────
+  const totalIncomeAll  = incomes.reduce((s, i) => s + Number(i.amount), 0);
+  const totalExpenseAll = expenses.reduce((s, e) => s + Number(e.amount), 0);
+
   const stats = USE_API && apiStats ? {
     totalUsers:    apiStats.users?.total        ?? 0,
     activeUsers:   apiStats.users?.active       ?? 0,
@@ -100,12 +143,12 @@ const AdminDashboard = () => {
       const now = new Date();
       return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
     }).length,
-    totalIncome,
-    totalExpense,
-    balance,
+    totalIncome:   ctxTotalIncome,
+    totalExpense:  ctxTotalExpense,
+    balance:       ctxBalance,
     monthlyIncome,
     monthlyExpense,
-    totalTx: transactions.length,
+    totalTx: ctxTransactions.length,
   };
 
   const summaryCards = [
@@ -152,54 +195,57 @@ const AdminDashboard = () => {
         <MonthlyBarChart data={chartData} />
       </div>
 
-      <div className="admin-dashboard__table-card">
-        <div className="admin-dashboard__table-head">
-          <h3>Top Foydalanuvchilar</h3>
-          <span>{regularUsers.length} ta user</span>
-        </div>
-        <div className="admin-top-users">
-          <table className="admin-table">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Foydalanuvchi</th>
-                <th>Holat</th>
-                <th>Daromad</th>
-                <th>Xarajat</th>
-                <th>Balans</th>
-              </tr>
-            </thead>
-            <tbody>
-              {topUsers.map((u, i) => (
-                <tr key={u.id}>
-                  <td className="admin-table__num">{i + 1}</td>
-                  <td>
-                    <div className="admin-table__user">
-                      <div className="admin-table__avatar">
-                        {u.avatar ? <img src={u.avatar} alt="" /> : u.fullName[0]}
-                      </div>
-                      <div>
-                        <p className="admin-table__name">{u.fullName}</p>
-                        <p className="admin-table__email">{u.email}</p>
-                      </div>
-                    </div>
-                  </td>
-                  <td>
-                    <span className={`admin-status-badge admin-status-badge--${(u.status || '').toLowerCase()}`}>
-                      {u.status === 'active' || u.status === 'ACTIVE' ? 'Faol' : 'Bloklangan'}
-                    </span>
-                  </td>
-                  <td className="text-success">{formatCurrency(u.totalIncome)}</td>
-                  <td className="text-danger">{formatCurrency(u.totalExpense)}</td>
-                  <td className={u.balance >= 0 ? 'text-success' : 'text-danger'}>
-                    {formatCurrency(u.balance)}
-                  </td>
+      {/* Top users jadvali — API mode da AdminUsers sahifasiga yo'naltirish */}
+      {!USE_API && (
+        <div className="admin-dashboard__table-card">
+          <div className="admin-dashboard__table-head">
+            <h3>Top Foydalanuvchilar</h3>
+            <span>{regularUsers.length} ta user</span>
+          </div>
+          <div className="admin-top-users">
+            <table className="admin-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Foydalanuvchi</th>
+                  <th>Holat</th>
+                  <th>Daromad</th>
+                  <th>Xarajat</th>
+                  <th>Balans</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {topUsers.map((u, i) => (
+                  <tr key={u.id}>
+                    <td className="admin-table__num">{i + 1}</td>
+                    <td>
+                      <div className="admin-table__user">
+                        <div className="admin-table__avatar">
+                          {u.avatar ? <img src={u.avatar} alt="" /> : u.fullName[0]}
+                        </div>
+                        <div>
+                          <p className="admin-table__name">{u.fullName}</p>
+                          <p className="admin-table__email">{u.email}</p>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <span className={`admin-status-badge admin-status-badge--${(u.status || '').toLowerCase()}`}>
+                        {u.status === 'active' || u.status === 'ACTIVE' ? 'Faol' : 'Bloklangan'}
+                      </span>
+                    </td>
+                    <td className="text-success">{formatCurrency(u.totalIncome)}</td>
+                    <td className="text-danger">{formatCurrency(u.totalExpense)}</td>
+                    <td className={u.balance >= 0 ? 'text-success' : 'text-danger'}>
+                      {formatCurrency(u.balance)}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 };

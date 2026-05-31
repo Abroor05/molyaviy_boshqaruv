@@ -172,7 +172,7 @@
 .auth-input-wrap input {
   width: 100%;
   height: 42px;
-  padding: 0 40px 0 38px;
+  padding: 0 38px 0 14px;
   border: 1.5px solid var(--color-border);
   border-radius: var(--radius-md);
   background: var(--color-bg);
@@ -199,13 +199,21 @@
   box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12);
 }
 
-/* ── Input icon (left) ───────────────────────────────────── */
+/* ── Input icon (right) ──────────────────────────────────── */
 .auth-input-icon {
   position: absolute;
-  left: 12px;
+  right: 12px;
   color: var(--color-text-muted);
   pointer-events: none;
   flex-shrink: 0;
+}
+
+/* Parol inputida eye button bor — icon undan chapda */
+.auth-input-wrap:has(.auth-eye-btn) input {
+  padding-right: 68px;
+}
+.auth-input-wrap:has(.auth-eye-btn) .auth-input-icon {
+  right: 42px;
 }
 
 /* ── Password eye button ─────────────────────────────────── */
@@ -326,65 +334,6 @@
 .auth-switch a:hover {
   color: var(--color-primary-dark);
   text-decoration: underline;
-}
-
-/* ── Demo credential cards ───────────────────────────────── */
-.auth-demo-cards {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px;
-  margin-top: 24px;
-}
-
-.auth-demo-card {
-  padding: 12px 14px;
-  border-radius: var(--radius-md);
-  border: 1.5px solid var(--color-border);
-  background: var(--color-bg);
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-.auth-demo-card code {
-  font-size: 11.5px;
-  color: var(--color-text-secondary);
-  font-family: 'Fira Code', 'Courier New', monospace;
-  word-break: break-all;
-}
-
-.auth-demo-card--admin {
-  border-color: rgba(var(--color-primary-rgb), 0.3);
-  background: var(--color-primary-light);
-}
-.auth-demo-card--admin code {
-  color: var(--color-primary-dark);
-}
-
-.auth-demo-card--user {
-  border-color: rgba(16, 185, 129, 0.3);
-  background: var(--color-success-light);
-}
-.auth-demo-card--user code {
-  color: var(--color-success-dark);
-}
-
-.auth-demo-card__badge {
-  display: inline-block;
-  font-size: 10px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.6px;
-  padding: 2px 7px;
-  border-radius: var(--radius-full);
-  margin-bottom: 4px;
-}
-.auth-demo-card--admin .auth-demo-card__badge {
-  background: var(--color-primary);
-  color: #ffffff;
-}
-.auth-demo-card--user .auth-demo-card__badge {
-  background: var(--color-success);
-  color: #ffffff;
 }
 
 /* ── Right panel content ─────────────────────────────────── */
